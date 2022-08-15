@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <SplitPane fx:id="rootPane" dividerPositions="0.812625250501002" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.chess.Controller">
   <items>
@@ -40,10 +41,11 @@
       </AnchorPane>
     <AnchorPane prefHeight="600.0" prefWidth="400.0">
          <children>
-            <ImageView fx:id="hell" fitHeight="150.0" fitWidth="200.0" layoutX="100.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="100.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" />
-            <Button fx:id="btn" layoutX="170.0" layoutY="422.0" mnemonicParsing="false" text="btn" />
-            <Label fx:id="winner" layoutX="173.0" layoutY="225.0" />
+            <Button fx:id="fastFinish" layoutX="163.0" layoutY="376.0" mnemonicParsing="false" text="Surrender" />
+            <Label fx:id="announcer" alignment="CENTER" contentDisplay="CENTER" layoutX="72.0" layoutY="102.0" prefHeight="98.0" prefWidth="249.0" text="Moves" textAlignment="CENTER">
+               <font>
+                  <Font size="36.0" />
+               </font></Label>
          </children>
     </AnchorPane>
   </items>

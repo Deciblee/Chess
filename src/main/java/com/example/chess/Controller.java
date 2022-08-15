@@ -1,9 +1,10 @@
 package com.example.chess;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.SplitPane;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -75,7 +76,9 @@ class ImageStore{
 class Table extends ImageStore{
     private Chessman[][] chessman = new Chessman[9][9];
     private int player_side = 1;
-    private Label winner;
+    private Label announcer;
+    private Button fastFinish;
+    private GridPane cellGridPane;
     private boolean fullStop = false;
 
     class Chessman{
@@ -265,7 +268,19 @@ class Table extends ImageStore{
 
     }
 
-    public Table() {
+    public void GameStart() {
+
+        announcer.setText("White moves");
+        player_side = 1;
+        fullStop = false;
+        fastFinish.setText("Surrender");
+        fastFinish.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent actionEvent){
+                Surrender(player_side);
+            }
+        });
+
         for (int i = 1; i <= 16; i++) {
             if (i < 9) {
                 //System.out.println("i = " + i);
@@ -302,10 +317,17 @@ class Table extends ImageStore{
                 chessman[i][k] = new Chessman(0, i, k);
             }
         }
+
+        setImgView();
+        FullRefresh();
     }
 
     public void setLabel(Label label){
-        winner = label;
+        announcer = label;
+    }
+
+    public void setButton(Button ff){
+        fastFinish = ff;
     }
 
     public void FullRefresh(){
@@ -329,8 +351,20 @@ class Table extends ImageStore{
         System.out.println("");
     }
 
-    public void setImg(int x,int y,ImageView IV){
-        chessman[x][y].setImgChess(IV);
+    public void setImgView(){
+        cellGridPane.getChildren().clear();
+        for (int i = 0 ;i<8;i++){
+            for (int k = 0 ;k<8;k++){
+                ImageView imageView = new ImageView();
+                cellGridPane.add(imageView,k,i);
+                imageView.setPickOnBounds(true);
+                chessman[i+1][k+1].setImgChess(imageView);
+            }
+        }
+    }
+
+    public void setGridPane(GridPane gridPane){
+        cellGridPane = gridPane;
     }
 
     public boolean ObstacleCheck(int positionX, int positionY, int nextX, int nextY) {
@@ -512,8 +546,10 @@ class Table extends ImageStore{
                 chessman[newX][newY].setID(temp_chessman.getID());
                 if (player_side == 1) {
                     player_side = -1;
+                    announcer.setText("Black moves");
                 } else {
                     player_side = 1;
+                    announcer.setText("White moves");
                 }
             }
         }
@@ -523,17 +559,24 @@ class Table extends ImageStore{
     }
 
     public void EndGame(int winner_side, int newX, int newY, int ID) {
+        fastFinish.setText("Restart");
+        fastFinish.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent actionEvent){
+                GameStart();
+            }
+        });
         if (winner_side == 1) {
-            winner.setText("player 1 wins");
+            announcer.setText("White wins");
             //System.out.println("player 1 wins");
             chessman[newX][newY].setID(ID);
             FullRefresh();
-            fullStop = false;
+            fullStop = true;
             //ShowLog();
             //System.exit(0);
 
         } else if (winner_side == -1) {
-            winner.setText("player 2 wins");
+            announcer.setText("Black wins");
             //System.out.println("player 2 wins");
             chessman[newX][newY].setID(ID);
             FullRefresh();
@@ -544,19 +587,39 @@ class Table extends ImageStore{
             //System.out.println("False call");
         }
     }
+
+    public void Surrender(int winner_side) {
+        fullStop = true;
+        fastFinish.setText("Restart");
+        fastFinish.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent actionEvent){
+                GameStart();
+            }
+        });
+        winner_side=winner_side*-1;
+        if (winner_side == 1) {
+            announcer.setText("White wins");
+
+        } else if (winner_side == -1) {
+            announcer.setText("Black wins");
+        } else {
+        }
+    }
 }
 
 
 public class Controller implements Initializable {
 
     @FXML
-    public SplitPane rootPane;
-    @FXML
     public ImageView backGround;
     @FXML
     public GridPane cellGridPane;
     @FXML
-    public Label winner;
+    public Label announcer;
+    @FXML
+    public Button fastFinish;
+
 
 
 
@@ -571,17 +634,10 @@ public class Controller implements Initializable {
         }
 
         Table table = new Table();
-
-        for (int i = 0 ;i<8;i++){
-            for (int k = 0 ;k<8;k++){
-                ImageView imageView = new ImageView();
-                cellGridPane.add(imageView,k,i);
-                imageView.setPickOnBounds(true);
-                table.setImg((i+1),(k+1),imageView);
-            }
-        }
-
-        table.setLabel(winner);
+        table.setLabel(announcer);
+        table.setButton(fastFinish);
+        table.setGridPane(cellGridPane);
+        table.GameStart();
 
         //table.ShowLog();
         table.FullRefresh();

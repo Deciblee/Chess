@@ -10,8 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Label;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -23,52 +22,48 @@ class ImageStore{
     //int c = 0;
 
     public ImageStore(){
-        try {
-            //c++;
-            //System.out.println("img get" + c);
-            FileInputStream imgFile;
-            imgFile = new FileInputStream("target/classes/img/W_1.png");
-            W[1] = new Image(imgFile);
-            for (int i = 2;i<9;i++){
-                W[i] = W[1];
-            }
-            imgFile = new FileInputStream("target/classes/img/W_9.png");
-            W[9] = new Image(imgFile);
-            W[10] = W[9];
-            imgFile = new FileInputStream("target/classes/img/W_11.png");
-            W[11] = new Image(imgFile);
-            W[12] = W[11];
-            imgFile = new FileInputStream("target/classes/img/W_13.png");
-            W[13] = new Image(imgFile);
-            W[14] = W[13];
-            imgFile = new FileInputStream("target/classes/img/W_15.png");
-            W[15] = new Image(imgFile);
-            imgFile = new FileInputStream("target/classes/img/W_16.png");
-            W[16] = new Image(imgFile);
-
-            imgFile = new FileInputStream("target/classes/img/B_1.png");
-            B[1] = new Image(imgFile);
-            for (int i = 2;i<9;i++){
-                B[i] = B[1];
-            }
-            imgFile = new FileInputStream("target/classes/img/B_9.png");
-            B[9] = new Image(imgFile);
-            B[10] = B[9];
-            imgFile = new FileInputStream("target/classes/img/B_11.png");
-            B[11] = new Image(imgFile);
-            B[12] = B[11];
-            imgFile = new FileInputStream("target/classes/img/B_13.png");
-            B[13] = new Image(imgFile);
-            B[14] = B[13];
-            imgFile = new FileInputStream("target/classes/img/B_15.png");
-            B[15] = new Image(imgFile);
-            imgFile = new FileInputStream("target/classes/img/B_16.png");
-            B[16] = new Image(imgFile);
-            imgFile = new FileInputStream("target/classes/img/empty.png");
-            empty = new Image(imgFile);
-        } catch (FileNotFoundException ex) {
-            System.out.println("img error");
+        //c++;
+        //System.out.println("img get" + c);
+        Image imgFile;
+        imgFile = new Image(this.getClass().getResourceAsStream("/img/W_1.png"));
+        W[1] = imgFile;
+        for (int i = 2;i<9;i++){
+            W[i] = W[1];
         }
+        imgFile = new Image(this.getClass().getResourceAsStream("/img/W_9.png"));
+        W[9] = imgFile;
+        W[10] = W[9];
+        imgFile = new Image(this.getClass().getResourceAsStream("/img/W_11.png"));
+        W[11] = imgFile;
+        W[12] = W[11];
+        imgFile = new Image(this.getClass().getResourceAsStream("/img/W_13.png"));
+        W[13] = imgFile;
+        W[14] = W[13];
+        imgFile = new Image(this.getClass().getResourceAsStream("/img/W_15.png"));
+        W[15] = imgFile;
+        imgFile = new Image(this.getClass().getResourceAsStream("/img/W_16.png"));
+        W[16] = imgFile;
+
+        imgFile = new Image(this.getClass().getResourceAsStream("/img/B_1.png"));
+        B[1] = imgFile;
+        for (int i = 2;i<9;i++){
+            B[i] = B[1];
+        }
+        imgFile = new Image(this.getClass().getResourceAsStream("/img/B_9.png"));
+        B[9] = imgFile;
+        B[10] = B[9];
+        imgFile = new Image(this.getClass().getResourceAsStream("/img/B_11.png"));
+        B[11] = imgFile;
+        B[12] = B[11];
+        imgFile = new Image(this.getClass().getResourceAsStream("/img/B_13.png"));
+        B[13] = imgFile;
+        B[14] = B[13];
+        imgFile = new Image(this.getClass().getResourceAsStream("/img/B_15.png"));
+        B[15] = imgFile;
+        imgFile = new Image(this.getClass().getResourceAsStream("/img/B_16.png"));
+        B[16] = imgFile;
+        imgFile = new Image(this.getClass().getResourceAsStream("/img/empty.png"));
+        empty = imgFile;
     }
 
 }
@@ -317,7 +312,6 @@ class Table extends ImageStore{
                 chessman[i][k] = new Chessman(0, i, k);
             }
         }
-
         setImgView();
         FullRefresh();
     }
@@ -625,13 +619,8 @@ public class Controller implements Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
 
-        try {
-            FileInputStream imgFile = new FileInputStream("img/BG.png");
-            Image image = new Image(imgFile);
-            backGround.setImage(image);
-        }
-        catch(FileNotFoundException ex) {
-        }
+        Image image = new Image(this.getClass().getResourceAsStream("/img/BG.png"));
+        backGround.setImage(image);
 
         Table table = new Table();
         table.setLabel(announcer);
